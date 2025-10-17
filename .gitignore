@@ -4,3 +4,12 @@ docker/mysql/data
 
 wordpress/wp-content/themes/*
 wordpress/wp-content/plugins/*
+wordpress/wp-content/languages/*
+wordpress/wp-content/upgrade/*
+wordpress/wp-content/uploads/*
+
+# カスタムプラグインを利用する場合
+# !wordpress/wp-content/plugins/my-custom-plugin
+# !wordpress/wp-content/languages/plugins/my-custom-plugin-*.po
+# !wordpress/wp-content/languages/plugins/my-custom-plugin-*.mo
+# !wordpress/wp-content/languages/plugins/my-custom-plugin-*.l10n.php
