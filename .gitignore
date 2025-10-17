@@ -1,3 +1,6 @@
 .DS_Store
 
 docker/mysql/data
+
+wordpress/wp-content/themes/*
+wordpress/wp-content/plugins/*
