@@ -58,7 +58,7 @@ This is a **WordPress local development environment using Docker**. It runs Word
 ### Directory Structure
 
 ```
-wordpress-example/
+wordpress-app-template/
 ├── .devcontainer/             # VS Code DevContainer configuration
 │   ├── devcontainer.json      # DevContainer settings
 │   └── setup.sh               # Post-create setup script
@@ -194,7 +194,7 @@ Customized for Docker environment:
 ```bash
 # Clone repository
 git clone <repository-url>
-cd wordpress-example
+cd wordpress-app-template
 
 # Start Docker containers
 docker-compose up -d
@@ -263,7 +263,7 @@ The DevContainer uses the `cli` service defined in `docker-compose.yml`, which s
 
 1. **Open repository in VS Code**
    ```bash
-   code /path/to/wordpress-example
+   code /path/to/wordpress-app-template
    ```
 
 2. **Reopen in Container**
