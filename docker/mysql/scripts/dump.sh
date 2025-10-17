@@ -5,9 +5,11 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 DUMP_FILE="docker/mysql/dumps/wordpress-${TIMESTAMP}.sql"
 
 echo "Creating database dump..."
-docker-compose exec -T db mysqldump \
+mysqldump \
+  -h db \
   -u root \
   -proot_password \
+  --skip-ssl \
   --single-transaction \
   --no-tablespaces \
   --skip-comments \

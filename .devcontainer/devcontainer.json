@@ -1,0 +1,31 @@
+{
+  "name": "WordPress DevContainer",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "cli",
+  "workspaceFolder": "/workspace",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.suggest.basic": false,
+        "intelephense.environment.includePaths": [
+          "/workspace/wordpress/wp-admin",
+          "/workspace/wordpress/wp-includes"
+        ],
+        "intelephense.environment.phpVersion": "8.4"
+      }
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  "remoteUser": "root",
+
+  "shutdownAction": "none",
+
+  "runServices": ["db", "wordpress", "phpmyadmin", "cli"]
+}

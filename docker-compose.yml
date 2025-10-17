@@ -49,6 +49,27 @@ services:
     networks:
       - wordpress_network
 
+  cli:
+    build:
+      context: ./docker/cli
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    depends_on:
+      - db
+      - wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+      - .:/workspace
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress_user
+      WORDPRESS_DB_PASSWORD: 'wordpress_user_password'
+      WORDPRESS_DB_NAME: wordpress_db
+    working_dir: /workspace
+    command: sleep infinity
+    networks:
+      - wordpress_network
+
 networks:
   wordpress_network:
     driver: bridge

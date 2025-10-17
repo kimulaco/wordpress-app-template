@@ -37,29 +37,42 @@ This is a **WordPress local development environment using Docker**. It runs Word
 │  Volume: ./wordpress:/var/www/html         │
 └────────────────┬────────────────────────────┘
                  │
+                 │ wordpress_network
                  ▼
 ┌─────────────────────────────────────────────┐
-│  MySQL Container                            │
+│  MySQL Container (db)                       │
 │  (mysql:8.0.23)                            │
 │  Database: wordpress_db                     │
 │  Volume: ./docker/mysql/data               │
 └────────────────┬────────────────────────────┘
                  │
-                 ▼
-┌─────────────────────────────────────────────┐
-│  phpMyAdmin Container                       │
-│  (phpmyadmin/phpmyadmin:latest)            │
-│  Port: 8081 → 80                           │
-└─────────────────────────────────────────────┘
+     ┌───────────┼───────────┐
+     │           │           │
+     ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────────────┐
+│phpMyAdmin │WordPress│ CLI (DevContainer)│
+│Port: 8081│         │ PHP+WP-CLI+Git   │
+└──────────┘         └─────────────────┘
 ```
 
 ### Directory Structure
 
 ```
 wordpress-example/
+├── .devcontainer/             # VS Code DevContainer configuration
+│   ├── devcontainer.json      # DevContainer settings
+│   └── setup.sh               # Post-create setup script
 ├── docker/
+│   ├── cli/                   # DevContainer/CLI service
+│   │   └── Dockerfile         # PHP 8.4 + WP-CLI image
 │   └── mysql/
-│       └── data/              # MySQL data files (persistent)
+│       ├── data/              # MySQL data files (persistent, ignored)
+│       ├── dumps/             # Database dumps (ignored)
+│       ├── scripts/           # Database management scripts
+│       │   ├── dump.sh        # Create database dump
+│       │   ├── restore.sh     # Restore database from dump
+│       │   └── reset.sh       # Reset database
+│       └── README.md          # Database management guide
 ├── wordpress/                 # WordPress root directory
 │   ├── wp-admin/              # Admin panel
 │   ├── wp-includes/           # Core files (2,210+ files)
@@ -71,11 +84,13 @@ wordpress-example/
 │   │   ├── plugins/           # Plugins
 │   │   │   └── akismet/       # Akismet spam protection
 │   │   ├── languages/         # Translation files
-│   │   └── upgrade/           # Upgrade directory
+│   │   ├── uploads/           # User uploads (ignored)
+│   │   └── upgrade/           # Upgrade directory (ignored)
 │   ├── wp-config.php          # WordPress configuration
 │   └── index.php              # Entry point
 ├── docker-compose.yml         # Docker configuration
-└── .gitignore                 # Git exclusion settings
+├── .gitignore                 # Git exclusion settings
+└── AGENT.md                   # This documentation
 ```
 
 ## 🔧 Configuration
@@ -117,6 +132,28 @@ Image: phpmyadmin/phpmyadmin:latest
 Platform: linux/amd64
 Port: 8081:80
 ```
+
+#### CLI Service (DevContainer)
+```yaml
+Build: ./docker/cli/Dockerfile
+Base Image: php:8.4-cli
+Platform: linux/amd64
+Volumes:
+  - ./wordpress:/var/www/html
+  - .:/workspace
+Working Directory: /workspace
+```
+
+**Installed Tools:**
+- PHP 8.4 CLI with extensions (mysqli, gd, zip, mbstring, xml, exif)
+- WP-CLI
+- Git
+- MySQL client
+
+**Use Cases:**
+- VS Code DevContainer environment
+- Manual CLI access: `docker-compose exec cli bash`
+- WP-CLI commands: `docker-compose exec cli wp --allow-root`
 
 ### WordPress Configuration (wp-config.php)
 
@@ -195,6 +232,183 @@ docker-compose exec wordpress bash
 docker-compose exec db mysql -u root -p
 ```
 
+### VS Code DevContainer
+
+This repository includes a DevContainer configuration for a consistent development environment.
+
+#### Prerequisites
+
+- Visual Studio Code
+- Docker Desktop
+- Remote - Containers extension for VS Code
+
+#### DevContainer Architecture
+
+```
+.devcontainer/
+├── devcontainer.json    # VS Code configuration
+└── setup.sh             # Post-create setup script
+
+docker/
+└── cli/
+    └── Dockerfile       # Container image definition
+
+docker-compose.yml
+└── cli service          # DevContainer service
+```
+
+The DevContainer uses the `cli` service defined in `docker-compose.yml`, which shares the same network as WordPress, MySQL, and phpMyAdmin.
+
+#### Using DevContainer
+
+1. **Open repository in VS Code**
+   ```bash
+   code /path/to/wordpress-example
+   ```
+
+2. **Reopen in Container**
+   - VS Code will detect `.devcontainer/devcontainer.json`
+   - Click "Reopen in Container" prompt
+   - Or: Press F1 → "Dev Containers: Reopen in Container"
+
+3. **Wait for container to build**
+   - First time: Downloads images and builds container (3-5 minutes)
+   - Subsequent times: Starts immediately (10-30 seconds)
+
+4. **Start developing**
+   - Terminal opens inside container with PHP 8.4 + WP-CLI
+   - Full access to WordPress files
+   - IntelliSense and autocomplete enabled
+
+#### DevContainer Features
+
+**Installed Tools**:
+- PHP 8.4 CLI with WordPress extensions (mysqli, gd, zip, mbstring, xml, exif)
+- WP-CLI (WordPress command-line interface)
+- Git
+- MySQL client (mariadb-client)
+
+**VS Code Extensions** (Auto-installed):
+- PHP Intelephense (IntelliSense and code intelligence)
+
+**Network Access**:
+- MySQL database: `db:3306`
+- WordPress: http://localhost:8000
+- phpMyAdmin: http://localhost:8081
+
+**Working Directory**:
+- Container: `/workspace` (repository root)
+- WordPress files: `/var/www/html` (mapped to `./wordpress`)
+- All changes sync bidirectionally with host machine
+
+#### Common WP-CLI Commands in DevContainer
+
+**Note**: DevContainer runs as root user, so `--allow-root` flag is required for WP-CLI commands.
+
+```bash
+# Check WP-CLI info
+wp --info --allow-root
+
+# Plugin management
+wp plugin list --path=/workspace/wordpress --allow-root
+wp plugin activate <plugin-name> --path=/workspace/wordpress --allow-root
+wp plugin deactivate <plugin-name> --path=/workspace/wordpress --allow-root
+
+# Theme management
+wp theme list --path=/workspace/wordpress --allow-root
+wp theme activate <theme-name> --path=/workspace/wordpress --allow-root
+
+# User management
+wp user list --path=/workspace/wordpress --allow-root
+wp user create newuser user@example.com --role=administrator --path=/workspace/wordpress --allow-root
+
+# Database operations
+wp db query "SHOW TABLES" --path=/workspace/wordpress --allow-root
+wp db query "SELECT * FROM wp_posts LIMIT 5" --path=/workspace/wordpress --allow-root
+wp db check --path=/workspace/wordpress --allow-root
+
+# WordPress core
+wp core version --path=/workspace/wordpress --allow-root
+wp core update --path=/workspace/wordpress --allow-root
+wp core verify-checksums --path=/workspace/wordpress --allow-root
+
+# Interactive shell
+wp shell --path=/workspace/wordpress --allow-root
+```
+
+#### Development Workflow
+
+**Plugin Development**:
+```bash
+# Create custom plugin
+cd /workspace/wordpress/wp-content/plugins
+mkdir my-custom-plugin
+cd my-custom-plugin
+touch my-custom-plugin.php
+
+# Edit files in VS Code
+# Changes sync to host machine automatically
+
+# Activate plugin
+wp plugin activate my-custom-plugin --path=/workspace/wordpress --allow-root
+```
+
+**Theme Development**:
+```bash
+# Create custom theme
+cd /workspace/wordpress/wp-content/themes
+mkdir my-custom-theme
+cd my-custom-theme
+touch style.css functions.php index.php
+
+# Activate theme
+wp theme activate my-custom-theme --path=/workspace/wordpress --allow-root
+```
+
+#### Troubleshooting DevContainer
+
+**Container won't start**:
+```bash
+# Rebuild container
+F1 → "Dev Containers: Rebuild Container"
+
+# Or rebuild from terminal
+docker-compose build cli
+docker-compose up -d cli
+```
+
+**Database connection issues**:
+```bash
+# Check if services are running
+docker-compose ps
+
+# Check MySQL is ready (from within DevContainer)
+mysql -h db -u wordpress_user -pwordpress_user_password --skip-ssl -e "SELECT 1"
+
+# Restart services
+docker-compose restart db wordpress
+```
+
+**WP-CLI errors**:
+```bash
+# Always use --allow-root flag
+wp plugin list --allow-root
+
+# Or use --path flag
+wp plugin list --path=/workspace/wordpress --allow-root
+```
+
+**Permission issues**:
+```bash
+# Fix WordPress file permissions (from host)
+sudo chown -R www-data:www-data wordpress/wp-content
+```
+
+**Exit DevContainer**:
+- F1 → "Dev Containers: Reopen Folder Locally"
+- Or close VS Code
+- Services continue running: `docker-compose ps`
+
 ## 🗄️ Database Management
 
 ### phpMyAdmin Access
@@ -228,11 +442,34 @@ SHOW TABLES;
 
 **Important**: Database dump files (.sql) are NOT tracked in Git for security and repository size reasons.
 
+#### Execution Methods
+
+The database scripts are designed to run **inside the CLI container** and connect directly to MySQL via the Docker network.
+
+**From DevContainer** (recommended):
+```bash
+# You're already inside the CLI container
+bash docker/mysql/scripts/dump.sh
+bash docker/mysql/scripts/restore.sh <file>
+bash docker/mysql/scripts/reset.sh
+```
+
+**From Host Machine**:
+```bash
+# Execute scripts inside CLI container
+docker-compose exec cli bash docker/mysql/scripts/dump.sh
+docker-compose exec cli bash docker/mysql/scripts/restore.sh <file>
+docker-compose exec cli bash docker/mysql/scripts/reset.sh
+```
+
 #### Create Database Dump
 
 ```bash
-# Dump current database state
-bash database/scripts/dump.sh
+# DevContainer内
+bash docker/mysql/scripts/dump.sh
+
+# ホストマシンから
+docker-compose exec cli bash docker/mysql/scripts/dump.sh
 
 # Output: docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 ```
@@ -243,18 +480,23 @@ bash database/scripts/dump.sh
 # List available dumps
 ls -lh docker/mysql/dumps/
 
-# Restore from specific dump
-bash database/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
+# DevContainer内
+bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
 
-# Also supports uncompressed files
-bash database/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql
+# ホストマシンから
+docker-compose exec cli bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
+
+# Also supports uncompressed files (.sql)
 ```
 
 #### Reset Database
 
 ```bash
-# Reset database to empty state
-bash database/scripts/reset.sh
+# DevContainer内
+bash docker/mysql/scripts/reset.sh
+
+# ホストマシンから
+docker-compose exec cli bash docker/mysql/scripts/reset.sh
 
 # After reset, you can:
 # - Install WordPress from scratch: http://localhost:8000
