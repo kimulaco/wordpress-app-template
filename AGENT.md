@@ -224,15 +224,57 @@ USE wordpress_db;
 SHOW TABLES;
 ```
 
-### Database Backup
+### Database Dump and Restore
+
+**Important**: Database dump files (.sql) are NOT tracked in Git for security and repository size reasons.
+
+#### Create Database Dump
 
 ```bash
-# Export entire database
-docker-compose exec db mysqldump -u root -proot_password wordpress_db > backup.sql
+# Dump current database state
+bash database/scripts/dump.sh
 
-# Import database
-docker-compose exec -T db mysql -u root -proot_password wordpress_db < backup.sql
+# Output: docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 ```
+
+#### Restore Database
+
+```bash
+# List available dumps
+ls -lh docker/mysql/dumps/
+
+# Restore from specific dump
+bash database/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
+
+# Also supports uncompressed files
+bash database/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql
+```
+
+#### Reset Database
+
+```bash
+# Reset database to empty state
+bash database/scripts/reset.sh
+
+# After reset, you can:
+# - Install WordPress from scratch: http://localhost:8000
+# - Restore from a dump file
+```
+
+#### Getting Database Dump (New Members)
+
+1. Contact team lead or existing developers
+2. Request dump file via secure channel (Slack DM, encrypted storage)
+3. Place the .sql or .sql.gz file in `docker/mysql/dumps/` directory
+4. Run restore command
+5. See `docker/mysql/dumps/README.md` for details
+
+#### Security Guidelines
+
+- Database dumps are excluded from Git (.gitignore)
+- Dumps may contain sensitive information (user data, credentials)
+- Share dumps only through secure channels
+- Delete local dumps after use if they contain production data
 
 ## 📝 Development Guide
 

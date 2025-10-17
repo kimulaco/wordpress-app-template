@@ -1,6 +1,10 @@
 .DS_Store
 
 docker/mysql/data
+docker/mysql/dumps/*.sql
+docker/mysql/dumps/*.sql.gz
+!docker/mysql/dumps/.gitkeep
+!docker/mysql/dumps/README.md
 
 wordpress/wp-content/themes/*
 wordpress/wp-content/plugins/*
