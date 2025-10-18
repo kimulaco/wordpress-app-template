@@ -43,7 +43,7 @@ This is a **WordPress local development environment using Docker**. It runs Word
 │  MySQL Container (db)                       │
 │  (mysql:8.0.23)                            │
 │  Database: wordpress_db                     │
-│  Volume: ./docker/mysql/data               │
+│  Volume: ./docker/db/data                  │
 └────────────────┬────────────────────────────┘
                  │
      ┌───────────┼───────────┐
@@ -65,7 +65,7 @@ wordpress-app-template/
 ├── docker/
 │   ├── cli/                   # DevContainer/CLI service
 │   │   └── Dockerfile         # PHP 8.4 + WP-CLI + Composer image
-│   ├── mysql/
+│   ├── db/
 │   │   ├── data/              # MySQL data files (persistent, ignored)
 │   │   ├── dumps/             # Database dumps (ignored)
 │   │   ├── scripts/           # Database management scripts
@@ -171,7 +171,7 @@ Volume: ./wordpress:/var/www/html
 ```yaml
 Image: mysql:8.0.23
 Platform: linux/amd64
-Volume: ./docker/mysql/data:/var/lib/mysql
+Volume: ./docker/db/data:/var/lib/mysql
 ```
 
 **Environment Variables:**
@@ -503,42 +503,42 @@ The database scripts are designed to run **inside the CLI container** and connec
 **From DevContainer** (recommended):
 ```bash
 # You're already inside the CLI container
-bash docker/mysql/scripts/dump.sh
-bash docker/mysql/scripts/restore.sh <file>
-bash docker/mysql/scripts/reset.sh
+bash docker/db/scripts/dump.sh
+bash docker/db/scripts/restore.sh <file>
+bash docker/db/scripts/reset.sh
 ```
 
 **From Host Machine**:
 ```bash
 # Execute scripts inside CLI container
-docker-compose exec cli bash docker/mysql/scripts/dump.sh
-docker-compose exec cli bash docker/mysql/scripts/restore.sh <file>
-docker-compose exec cli bash docker/mysql/scripts/reset.sh
+docker-compose exec cli bash docker/db/scripts/dump.sh
+docker-compose exec cli bash docker/db/scripts/restore.sh <file>
+docker-compose exec cli bash docker/db/scripts/reset.sh
 ```
 
 #### Create Database Dump
 
 ```bash
 # DevContainer内
-bash docker/mysql/scripts/dump.sh
+bash docker/db/scripts/dump.sh
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/dump.sh
+docker-compose exec cli bash docker/db/scripts/dump.sh
 
-# Output: docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
+# Output: docker/db/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 ```
 
 #### Restore Database
 
 ```bash
 # List available dumps
-ls -lh docker/mysql/dumps/
+ls -lh docker/db/dumps/
 
 # DevContainer内
-bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
+bash docker/db/scripts/restore.sh docker/db/dumps/wordpress-20251017_120000.sql.gz
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz
+docker-compose exec cli bash docker/db/scripts/restore.sh docker/db/dumps/wordpress-20251017_120000.sql.gz
 
 # Also supports uncompressed files (.sql)
 ```
@@ -547,10 +547,10 @@ docker-compose exec cli bash docker/mysql/scripts/restore.sh docker/mysql/dumps/
 
 ```bash
 # DevContainer内
-bash docker/mysql/scripts/reset.sh
+bash docker/db/scripts/reset.sh
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/reset.sh
+docker-compose exec cli bash docker/db/scripts/reset.sh
 
 # After reset, you can:
 # - Install WordPress from scratch: http://localhost:8000
@@ -561,9 +561,9 @@ docker-compose exec cli bash docker/mysql/scripts/reset.sh
 
 1. Contact team lead or existing developers
 2. Request dump file via secure channel (Slack DM, encrypted storage)
-3. Place the .sql or .sql.gz file in `docker/mysql/dumps/` directory
+3. Place the .sql or .sql.gz file in `docker/db/dumps/` directory
 4. Run restore command
-5. See `docker/mysql/dumps/README.md` for details
+5. See `docker/db/dumps/README.md` for details
 
 #### Security Guidelines
 
@@ -715,7 +715,7 @@ In WordPress admin:
 Excluded from Git:
 ```gitignore
 .DS_Store                           # macOS system files
-docker/mysql/data                   # MySQL data files
+docker/db/data                   # MySQL data files
 wordpress/wp-content/themes/*       # Theme files
 wordpress/wp-content/plugins/*      # Plugin files
 ```
@@ -805,11 +805,11 @@ docker-compose up -d
 
 #### 5. Database Gets Reset
 
-Database data persists in `./docker/mysql/data`.
+Database data persists in `./docker/db/data`.
 
 ```bash
 # Check data directory
-ls -la docker/mysql/data
+ls -la docker/db/data
 
 # Restore from backup
 docker-compose exec -T db mysql -u root -proot_password wordpress_db < backup.sql

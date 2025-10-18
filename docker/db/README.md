@@ -9,27 +9,27 @@
 **DevContainer内から**（推奨）:
 ```bash
 # すでにCLIコンテナ内にいるので、直接実行
-bash docker/mysql/scripts/dump.sh
-bash docker/mysql/scripts/restore.sh <ファイル>
-bash docker/mysql/scripts/reset.sh
+bash docker/db/scripts/dump.sh
+bash docker/db/scripts/restore.sh <ファイル>
+bash docker/db/scripts/reset.sh
 ```
 
 **ホストマシンから**:
 ```bash
 # CLIコンテナ経由で実行
-docker-compose exec cli bash docker/mysql/scripts/dump.sh
-docker-compose exec cli bash docker/mysql/scripts/restore.sh <ファイル>
-docker-compose exec cli bash docker/mysql/scripts/reset.sh
+docker-compose exec cli bash docker/db/scripts/dump.sh
+docker-compose exec cli bash docker/db/scripts/restore.sh <ファイル>
+docker-compose exec cli bash docker/db/scripts/reset.sh
 ```
 
 ### データベースを復元
 
 ```bash
 # DevContainer内
-bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
+bash docker/db/scripts/restore.sh docker/db/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
+docker-compose exec cli bash docker/db/scripts/restore.sh docker/db/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 
 # 非圧縮ファイル(.sql)も対応
 ```
@@ -38,22 +38,22 @@ docker-compose exec cli bash docker/mysql/scripts/restore.sh docker/mysql/dumps/
 
 ```bash
 # DevContainer内
-bash docker/mysql/scripts/dump.sh
+bash docker/db/scripts/dump.sh
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/dump.sh
+docker-compose exec cli bash docker/db/scripts/dump.sh
 
-# 出力: docker/mysql/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
+# 出力: docker/db/dumps/wordpress-YYYYMMDD_HHMMSS.sql.gz
 ```
 
 ### データベースをリセット
 
 ```bash
 # DevContainer内
-bash docker/mysql/scripts/reset.sh
+bash docker/db/scripts/reset.sh
 
 # ホストマシンから
-docker-compose exec cli bash docker/mysql/scripts/reset.sh
+docker-compose exec cli bash docker/db/scripts/reset.sh
 
 # ⚠️ 全データが削除されます
 ```

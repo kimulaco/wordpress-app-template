@@ -6,11 +6,11 @@ DUMP_FILE="${1}"
 if [ -z "${DUMP_FILE}" ]; then
   echo "Error: Please specify dump file"
   echo ""
-  echo "Usage: bash docker/mysql/scripts/restore.sh <dump-file>"
-  echo "Example: bash docker/mysql/scripts/restore.sh docker/mysql/dumps/wordpress-20251017_120000.sql.gz"
+  echo "Usage: bash docker/db/scripts/restore.sh <dump-file>"
+  echo "Example: bash docker/db/scripts/restore.sh docker/db/dumps/wordpress-20251017_120000.sql.gz"
   echo ""
   echo "Available dumps:"
-  ls -lh docker/mysql/dumps/*.sql* 2>/dev/null || echo "  (no dumps found)"
+  ls -lh docker/db/dumps/*.sql* 2>/dev/null || echo "  (no dumps found)"
   exit 1
 fi
 

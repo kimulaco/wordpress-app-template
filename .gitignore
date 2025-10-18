@@ -9,11 +9,11 @@ wordpress/vendor/
 phpstan_cache
 
 # Docker
-docker/mysql/data
-docker/mysql/dumps/*.sql
-docker/mysql/dumps/*.sql.gz
-!docker/mysql/dumps/.gitkeep
-!docker/mysql/dumps/README.md
+docker/db/data
+docker/db/dumps/*.sql
+docker/db/dumps/*.sql.gz
+!docker/db/dumps/.gitkeep
+!docker/db/dumps/README.md
 
 # WordPress
 wordpress/wp-content/themes/*

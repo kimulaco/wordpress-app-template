@@ -2,7 +2,7 @@
 set -e
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-DUMP_FILE="docker/mysql/dumps/wordpress-${TIMESTAMP}.sql"
+DUMP_FILE="docker/db/dumps/wordpress-${TIMESTAMP}.sql"
 
 echo "Creating database dump..."
 mysqldump \
