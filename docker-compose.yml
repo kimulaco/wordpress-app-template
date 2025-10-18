@@ -24,6 +24,7 @@ services:
       - "8000:80"
     volumes:
       - ./wordpress:/var/www/html
+      - ./docker/wordpress/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress_user

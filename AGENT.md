@@ -64,16 +64,19 @@ wordpress-app-template/
 │   └── setup.sh               # Post-create setup script
 ├── docker/
 │   ├── cli/                   # DevContainer/CLI service
-│   │   └── Dockerfile         # PHP 8.4 + WP-CLI image
-│   └── mysql/
-│       ├── data/              # MySQL data files (persistent, ignored)
-│       ├── dumps/             # Database dumps (ignored)
-│       ├── scripts/           # Database management scripts
-│       │   ├── dump.sh        # Create database dump
-│       │   ├── restore.sh     # Restore database from dump
-│       │   └── reset.sh       # Reset database
-│       └── README.md          # Database management guide
+│   │   └── Dockerfile         # PHP 8.4 + WP-CLI + Composer image
+│   ├── mysql/
+│   │   ├── data/              # MySQL data files (persistent, ignored)
+│   │   ├── dumps/             # Database dumps (ignored)
+│   │   ├── scripts/           # Database management scripts
+│   │   │   ├── dump.sh        # Create database dump
+│   │   │   ├── restore.sh     # Restore database from dump
+│   │   │   └── reset.sh       # Reset database
+│   │   └── README.md          # Database management guide
+│   └── wordpress/
+│       └── php.ini            # Docker専用PHP設定（ログ出力設定）
 ├── wordpress/                 # WordPress root directory
+│   ├── .user.ini              # 本番環境用PHP設定（FTPアップロード対象）
 │   ├── wp-admin/              # Admin panel
 │   ├── wp-includes/           # Core files (2,210+ files)
 │   ├── wp-content/            # Customizable content
@@ -92,6 +95,57 @@ wordpress-app-template/
 ├── .gitignore                 # Git exclusion settings
 └── AGENT.md                   # This documentation
 ```
+
+## 📋 PHP Configuration Files
+
+### php.ini Files Overview
+
+This repository contains two PHP configuration files:
+
+#### 1. `docker/wordpress/php.ini` - Docker Only
+- **Purpose**: Reproduce production environment in Docker
+- **Mount Point**: `/usr/local/etc/php/php.ini` (inside WordPress container)
+- **Deployment**: Do NOT upload to rental servers
+- **Git Management**: ✅ Yes
+
+#### 2. `wordpress/.user.ini` - Production Environment
+- **Purpose**: Actual configuration deployed to rental servers
+- **Deployment**: Upload via FTP (together with WordPress files)
+- **Location**: Document root (e.g., `public_html/`)
+- **Git Management**: ✅ Yes
+- **Notes**:
+  - Permission: 644
+  - Reflection time: 5-10 minutes (depends on server)
+  - Service-specific settings should be written here
+
+### PHP Log Configuration
+
+Common log settings in both files:
+
+```ini
+[PHP]
+; Don't display errors on screen (security)
+display_errors = Off
+
+; Log errors to file
+log_errors = On
+error_log = error_log
+
+; Timezone setting
+date.timezone = Asia/Tokyo
+```
+
+### Mounting in docker-compose.yml
+
+Mount `docker/wordpress/php.ini` to WordPress container:
+
+```yaml
+wordpress:
+  volumes:
+    - ./docker/wordpress/php.ini:/usr/local/etc/php/php.ini:ro
+```
+
+**Note**: Container restart required after configuration changes: `docker compose restart wordpress`
 
 ## 🔧 Configuration
 
