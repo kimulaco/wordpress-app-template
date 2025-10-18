@@ -7,10 +7,14 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "bmewburn.vscode-intelephense-client"
+        "bmewburn.vscode-intelephense-client",
+        "SanderRonde.phpstan-vscode"
       ],
       "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php"
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "phpstan.binPath": "${workspaceFolder}/wordpress/vendor/bin/phpstan",
+        "phpstan.rootDir": "${workspaceFolder}/wordpress",
+        "phpstan.singleFileMode": true
       }
     }
   },

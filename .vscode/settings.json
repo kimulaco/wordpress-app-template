@@ -1,4 +1,8 @@
 {
+  "files.associations": {
+    "*.neon": "yaml"
+  },
   "php.suggest.basic": false,
   "intelephense.environment.phpVersion": "8.4"
+  
 }

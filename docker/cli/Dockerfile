@@ -29,6 +29,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
+# Install Composer
+COPY --from=composer/composer:2.8.12 /usr/bin/composer /usr/bin/composer
+
 # Set working directory
 WORKDIR /workspace
 

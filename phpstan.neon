@@ -1,0 +1,16 @@
+includes:
+  - wordpress/vendor/szepeviktor/phpstan-wordpress/extension.neon
+  # - phpstan-baseline.php
+
+parameters:
+  level: 7
+  tmpDir: phpstan_cache
+  reportUnmatchedIgnoredErrors: false
+  excludePaths:
+    - phpstan-baseline.php (?)
+    - wordpress/vendor
+    - wordpress/wp-content/upgrade (?)
+    - wordpress/wp-content/uploads (?)
+    - wordpress/wp-content/themes
+    - wordpress/wp-content/plugins
+    - wordpress/wp-content/languages

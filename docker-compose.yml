@@ -60,6 +60,8 @@ services:
     volumes:
       - ./wordpress:/var/www/html
       - .:/workspace
+      - vendor:/workspace/wordpress/vendor
+      - phpstan_cache:/workspace/phpstan_cache
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress_user
@@ -69,6 +71,10 @@ services:
     command: sleep infinity
     networks:
       - wordpress_network
+
+volumes:
+  vendor:
+  phpstan_cache:
 
 networks:
   wordpress_network:

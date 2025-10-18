@@ -1,0 +1,20 @@
+{
+    "name": "kimulaco/wordpress-app-template",
+    "config": {
+        "vendor-dir": "wordpress/vendor",
+        "optimize-autoloader": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Root\\Workspace\\": "wordpress/src/"
+        }
+    },
+    "scripts": {
+        "phpstan": "wordpress/vendor/bin/phpstan analyse wordpress --memory-limit=2G",
+        "phpstan-baseline": "wordpress/vendor/bin/phpstan analyse wordpress --memory-limit=2G -b phpstan-baseline.php"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "szepeviktor/phpstan-wordpress": "^2.0"
+    }
+}

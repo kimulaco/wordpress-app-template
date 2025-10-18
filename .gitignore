@@ -1,11 +1,21 @@
 .DS_Store
+.env
+.envrc
 
+# Composer
+wordpress/vendor/
+
+# PHPStan
+phpstan_cache
+
+# Docker
 docker/mysql/data
 docker/mysql/dumps/*.sql
 docker/mysql/dumps/*.sql.gz
 !docker/mysql/dumps/.gitkeep
 !docker/mysql/dumps/README.md
 
+# WordPress
 wordpress/wp-content/themes/*
 wordpress/wp-content/plugins/*
 wordpress/wp-content/languages/*
