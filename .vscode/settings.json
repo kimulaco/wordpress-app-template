@@ -2,7 +2,22 @@
   "files.associations": {
     "*.neon": "yaml"
   },
+
   "php.suggest.basic": false,
-  "intelephense.environment.phpVersion": "8.4"
-  
+
+  // PHP Intelephense
+  "intelephense.environment.phpVersion": "8.4",
+  "intelephense.stubs": [
+    "Core",
+    "date",
+    "json",
+    "mbstring",
+    "standard",
+    "pcre",
+    "wordpress"
+  ],
+
+  // PHPStan
+  "phpstan.binPath": "${workspaceFolder}/wordpress/vendor/bin/phpstan",
+  "phpstan.singleFileMode": true,
 }
