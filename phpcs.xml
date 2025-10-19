@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="wordpress-app-template">
+    <rule ref="PSR12"/>
+    <file>wordpress/wp-content/themes/custom-theme</file>
+</ruleset>

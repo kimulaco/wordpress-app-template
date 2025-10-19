@@ -1,4 +1,5 @@
 <?php
+
 namespace CustomTheme\Config\Widgets;
 
 const WIDGETS_LISTS = [

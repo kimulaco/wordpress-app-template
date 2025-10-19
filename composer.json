@@ -10,11 +10,13 @@
         }
     },
     "scripts": {
+        "phpcs": "wordpress/vendor/bin/phpcs",
         "phpstan": "wordpress/vendor/bin/phpstan analyse wordpress --memory-limit=2G",
         "phpstan-baseline": "wordpress/vendor/bin/phpstan analyse wordpress --memory-limit=2G -b phpstan-baseline.php"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.1",
-        "szepeviktor/phpstan-wordpress": "^2.0"
+        "phpstan/phpstan": "2.1.31",
+        "szepeviktor/phpstan-wordpress": "2.0.3",
+        "squizlabs/php_codesniffer": "3.7.2"
     }
 }

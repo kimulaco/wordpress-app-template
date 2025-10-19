@@ -1,4 +1,5 @@
 <?php
+
 namespace CustomTheme\Config\Menus;
 
 const MENUS_LOCATION = [

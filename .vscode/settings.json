@@ -5,6 +5,11 @@
 
   "php.suggest.basic": false,
 
+  "[php]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "obliviousharmony.vscode-php-codesniffer",
+  },
+
   // PHP Intelephense
   "intelephense.environment.phpVersion": "8.4",
   "intelephense.stubs": [
@@ -15,6 +20,23 @@
     "standard",
     "pcre",
     "wordpress"
+  ],
+
+  // PHPCS
+  "phpCodeSniffer.autoExecutable": true,
+  "phpCodeSniffer.exec.linux": "${workspaceFolder}/wordpress/vendor/bin/phpcs",
+  "phpCodeSniffer.exec.osx": "${workspaceFolder}/wordpress/vendor/bin/phpcs",
+  "phpCodeSniffer.lintAction": ["Change", "Save"],
+  "phpCodeSniffer.standard": "Custom",
+  "phpCodeSniffer.standardCustom": "phpcs.xml",
+  "phpCodeSniffer.exclude": [
+    "**/wordpress/wp-admin/**",
+    "**/wordpress/wp-includes/**",
+    "**/wordpress/wp-content/themes/twenty*/**",
+    "**/wordpress/wp-content/plugins/**",
+    "**/vendor/**",
+    "**/phpstan_cache/**",
+    "**/phpstan-baseline.php",
   ],
 
   // PHPStan

@@ -1,7 +1,9 @@
 <?php
+
 namespace CustomTheme\Helpers\Assets;
 
-function create_asset_handle(string $path): string {
+function create_asset_handle(string $path): string
+{
     $path_handle = \ltrim($path, '/');
     $path_handle = \preg_replace('/\.[^.]+$/', '', $path_handle);
 
@@ -9,7 +11,8 @@ function create_asset_handle(string $path): string {
         . \str_replace('/', '-', $path_handle);
 }
 
-function load_style(string $path): void {
+function load_style(string $path): void
+{
     wp_enqueue_style(
         create_asset_handle($path),
         get_template_directory_uri() . $path,
@@ -18,7 +21,8 @@ function load_style(string $path): void {
     );
 }
 
-function load_script(string $path): void {
+function load_script(string $path): void
+{
     wp_enqueue_script(
         create_asset_handle($path),
         get_template_directory_uri() . $path,

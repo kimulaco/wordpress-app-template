@@ -1,4 +1,5 @@
 <?php
+
 namespace CustomTheme;
 
 $theme_dir = get_template_directory();
