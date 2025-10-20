@@ -1,0 +1,9 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+img {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+}

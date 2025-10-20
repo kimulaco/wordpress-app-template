@@ -1,6 +1,25 @@
 .DS_Store
+
+# env
 .env
+.env.*
+!.env.example
 .envrc
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node.js
+node_modules
+dist
+dist-ssr
+*.local
 
 # Composer
 wordpress/vendor/
@@ -24,9 +43,21 @@ wordpress/wp-content/uploads/*
 
 # WordPress Custom theme
 !wordpress/wp-content/themes/custom-theme
+wordpress/wp-content/themes/custom-theme/assets/*
 
 # WordPress Custom plugin
 # !wordpress/wp-content/plugins/my-custom-plugin
 # !wordpress/wp-content/languages/plugins/my-custom-plugin-*.po
 # !wordpress/wp-content/languages/plugins/my-custom-plugin-*.mo
 # !wordpress/wp-content/languages/plugins/my-custom-plugin-*.l10n.php
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,23 @@
+{
+  "name": "wordpress-app-template",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "engines": {
+    "node": "22.20.0"
+  },
+  "packageManager": "pnpm@10.18.3",
+  "scripts": {
+    "dev": "MODE=development rolldown -c rolldown.config.ts --watch",
+    "build:js": "tsc && rolldown -c rolldown.config.ts",
+    "build:css": "node lightningcss.config.ts",
+    "build:dev": "MODE=development pnpm build:js && MODE=development pnpm build:css",
+    "build:prod": "MODE=production pnpm build:js && MODE=production pnpm build:css"
+  },
+  "devDependencies": {
+    "@types/node": "24.8.1",
+    "lightningcss": "1.30.2",
+    "rolldown": "1.0.0-beta.43",
+    "typescript": "5.9.3"
+  }
+}

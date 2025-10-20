@@ -63,6 +63,7 @@ services:
       - .:/workspace
       - vendor:/workspace/wordpress/vendor
       - phpstan_cache:/workspace/phpstan_cache
+      - node_modules:/workspace/node_modules
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress_user

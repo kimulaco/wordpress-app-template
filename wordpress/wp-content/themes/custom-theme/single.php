@@ -3,7 +3,7 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php \CustomTheme\Helpers\Assets\load_style('/assets/css/main.css'); ?>
+    <?php \CustomTheme\Helpers\Assets\load_style('/assets/post.css'); ?>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -15,7 +15,7 @@
 
     <?php \CustomTheme\Helpers\Components\load_once('/components/layouts/site-footer.php'); ?>
 
-    <?php \CustomTheme\Helpers\Assets\load_script('/assets/js/main.js'); ?>
+    <?php \CustomTheme\Helpers\Assets\load_script('/assets/post.js'); ?>
 
     <?php wp_footer(); ?>
 </body>
