@@ -15,7 +15,6 @@ docker compose down
 ## Access URLs
 
 - **WordPress**: http://localhost:8000
-- **WordPress Admin**: http://localhost:8000/wp-admin
 - **phpMyAdmin**: http://localhost:8081
 
 ## Tech Stack
