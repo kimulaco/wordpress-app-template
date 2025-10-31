@@ -115,6 +115,14 @@ define('WP_DEBUG', !!getenv_docker('WORDPRESS_DEBUG', ''));
 //   require_once __DIR__ . '/vendor/autoload.php';
 // }
 
+// Sentry configuration
+if (($sentryPhpDsn = getenv_docker('WP_SENTRY_PHP_DSN', '')) !== '') {
+    define('WP_SENTRY_PHP_DSN', $sentryPhpDsn);
+}
+if (($sentryJsDsn = getenv_docker('WP_SENTRY_BROWSER_DSN', '')) !== '') {
+    define('WP_SENTRY_BROWSER_DSN', $sentryJsDsn);
+}
+
 // If we're behind a proxy server and using HTTPS, we need to alert WordPress of that fact
 // see also https://wordpress.org/support/article/administration-over-ssl/#using-a-reverse-proxy
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
