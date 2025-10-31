@@ -4,19 +4,19 @@ export const log = (value: unknown): void => {
   if (isProdMode()) {
     return;
   }
-  console.log(value);
+  console.log(value); // oxlint-disable-line no-console
 };
 
 export const error = (value: unknown): void => {
   if (isProdMode()) {
     return;
   }
-  console.error(value);
+  console.error(value); // oxlint-disable-line no-console
 };
 
 export const warn = (value: unknown): void => {
   if (isProdMode()) {
     return;
   }
-  console.warn(value);
+  console.warn(value); // oxlint-disable-line no-console
 };

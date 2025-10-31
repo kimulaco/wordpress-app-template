@@ -5,11 +5,6 @@
 
   "php.suggest.basic": false,
 
-  "[php]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "obliviousharmony.vscode-php-codesniffer",
-  },
-
   // PHP Intelephense
   "intelephense.environment.phpVersion": "8.4",
   "intelephense.stubs": [
@@ -38,8 +33,20 @@
     "**/phpstan_cache/**",
     "**/phpstan-baseline.php",
   ],
+  "[php]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "obliviousharmony.vscode-php-codesniffer",
+  },
 
   // PHPStan
   "phpstan.binPath": "${workspaceFolder}/wordpress/vendor/bin/phpstan",
   "phpstan.singleFileMode": true,
+
+  // Oxc
+  "oxc.lint.run": "onSave",
+  "oxc.configPath": ".oxlintrc.json",
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
 }

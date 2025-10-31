@@ -1,4 +1,4 @@
-import { log } from './modules/logger';
+import { log } from "./modules/logger";
 
 const main = async () => {
   setTimeout(() => {

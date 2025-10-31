@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "bmewburn.vscode-intelephense-client",
-    "obliviousharmony.vscode-php-codesniffer"
+    "obliviousharmony.vscode-php-codesniffer",
+    "oxc.oxc-vscode"
   ]
 }

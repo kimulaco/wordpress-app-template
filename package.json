@@ -8,15 +8,19 @@
   },
   "packageManager": "pnpm@10.18.3",
   "scripts": {
-    "dev": "MODE=development rolldown -c rolldown.config.ts --watch",
-    "build:js": "tsc && rolldown -c rolldown.config.ts",
-    "build:css": "node lightningcss.config.ts",
-    "build:dev": "MODE=development pnpm build:js && MODE=development pnpm build:css",
-    "build:prod": "MODE=production pnpm build:js && MODE=production pnpm build:css"
+    "dev": "MODE=development pnpm dev:script",
+    "dev:script": "rolldown -c rolldown.config.ts --watch",
+    "build:script": "tsc && rolldown -c rolldown.config.ts",
+    "build:style": "node lightningcss.config.ts",
+    "build:dev": "MODE=development pnpm build:script && MODE=development pnpm build:style",
+    "build:prod": "MODE=production pnpm build:script && MODE=production pnpm build:style",
+    "lint": "pnpm lint:script",
+    "lint:script": "oxlint --config .oxlintrc.json"
   },
   "devDependencies": {
     "@types/node": "24.8.1",
     "lightningcss": "1.30.2",
+    "oxlint": "1.23.0",
     "rolldown": "1.0.0-beta.43",
     "typescript": "5.9.3"
   }
